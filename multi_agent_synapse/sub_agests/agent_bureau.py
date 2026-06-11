@@ -1,12 +1,8 @@
-# pyrefly: ignore [missing-import]
 import os
 # pyrefly: ignore [missing-import]
 from google.adk.agents import LlmAgent
 # pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
-
-# Importando as ferramentas da sua pasta tools (que está na raiz)
-# pyrefly: ignore [missing-import]
 from multi_agent_synapse.tools.tool_agent_bureal import get_active_credits, get_debt_summary, get_status_trend
 
 
