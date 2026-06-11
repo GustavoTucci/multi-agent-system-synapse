@@ -1,3 +1,1 @@
-from multi_agent_synapse import orquestrador_concierge
-import sub_agests
-from tools import tool_agent_bureau, tool_agent_contratos, tool_agent_pagamento, tool_agent_cartao
+from .orquestrador_concierge import agent_concierge 
