@@ -1,23 +1,13 @@
-# pyrefly: ignore [missing-import]
 import pandas as pd
-# pyrefly: ignore [missing-import]
 import pandas_gbq
-import sys
-import os
 import math
-
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
-# pyrefly: ignore [missing-import]
-from queries import QUERY_CREDITOS_ATIVOS
-
+from ..queries.queries_agent_bureal import QUERY_CREDITOS_ATIVOS, QUERY_DEBT_SUMMARY, QUERY_STATUS_TREND
 
 def _sanitize(value):
     """Converte NaN e Inf para None, tornando o valor seguro para JSON."""
     if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
         return None
     return value
-
 
 def get_active_credits(sk_id_curr: int) -> dict:
     """Lista os créditos ativos de um cliente, incluindo tipo e valor de cada crédito.
@@ -34,12 +24,10 @@ def get_active_credits(sk_id_curr: int) -> dict:
         Retorna mensagem de status caso nenhum crédito ativo seja encontrado.
     """
     sql = QUERY_CREDITOS_ATIVOS.format(sk_id_curr=sk_id_curr)
-
     df = pandas_gbq.read_gbq(sql, project_id='prj-data-ps-us')
 
     if df.empty:
         return {"status": f"Nenhum crédito ativo localizado para o cliente {sk_id_curr}"}
-
 
     records = [
         {k: _sanitize(v) for k, v in row.items()}
@@ -47,26 +35,6 @@ def get_active_credits(sk_id_curr: int) -> dict:
     ]
 
     return {"creditos_ativos": records}
-
-
-    # pyrefly: ignore [missing-import]
-import pandas_gbq
-import math
-import sys
-import os
-
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
-# pyrefly: ignore [missing-import]
-from queries import QUERY_DEBT_SUMMARY, QUERY_STATUS_TREND
-
-
-def _sanitize(value):
-    
-    if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
-        return None
-    return value
-
 
 def get_debt_summary(sk_id_curr: int) -> dict:
     """Retorna um resumo consolidado das dívidas de um cliente, agrupado por tipo de crédito.
@@ -95,7 +63,6 @@ def get_debt_summary(sk_id_curr: int) -> dict:
     ]
 
     return {"resumo_dividas": records}
-
 
 def get_status_trend(sk_id_curr: int) -> dict:
     """Retorna a tendência mensal de status de pagamento de um cliente.

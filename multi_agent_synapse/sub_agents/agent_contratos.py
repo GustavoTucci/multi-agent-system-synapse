@@ -1,28 +1,19 @@
 import os
 from dotenv import load_dotenv
-from pydantic import BaseModel
 from google.adk.agents import LlmAgent
-
-from tools.tool_agent_contrato import (
+from ..tools.tool_agent_contrato import (
     get_application_history,
     get_rejection_reasons,
     get_top_products,
 )
+from ..schemas.output_schema_contrato import RespostaContratos
 
 load_dotenv()
 
 if api_key := os.getenv("GOOGLE_API_KEY"):
     os.environ["GOOGLE_API_KEY"] = api_key
 
-
-class ContractsReport(BaseModel):
-    taxa_aprovacao: float
-    motivos_rejeicao: list[str]
-    produtos_top3: list[str]
-    razao_valor_aprovado: float
-
-
-root_agent = LlmAgent(
+agent_contratos = LlmAgent(
     model="gemini-2.5-flash",
     name="agente_contratos",
     description="Agente especialista em contratos internos anteriores do cliente.",
@@ -35,12 +26,12 @@ root_agent = LlmAgent(
         "Use get_top_products para produtos_top3.\n"
         "Não use ID fixo. Não invente dados.\n"
         "Todos os cálculos devem vir das ferramentas Python.\n"
-        "Retorne apenas JSON no schema ContractsReport."
+        "Retorne apenas JSON no schema RespostaContratos."
     ),
     tools=[
         get_application_history,
         get_rejection_reasons,
         get_top_products,
     ],
-    output_schema=ContractsReport,
+    output_schema=RespostaContratos,
 )

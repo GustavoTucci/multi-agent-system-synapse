@@ -1,0 +1,1 @@
+from .queries_agent_bureal import QUERY_CREDITOS_ATIVOS, QUERY_DEBT_SUMMARY, QUERY_STATUS_TREND

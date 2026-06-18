@@ -1,3 +1,5 @@
+import pandas as pd
+import pandas_gbq
 
 
 QUERY_CREDITOS_ATIVOS = """

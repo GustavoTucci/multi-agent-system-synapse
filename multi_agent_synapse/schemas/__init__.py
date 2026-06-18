@@ -1,0 +1,4 @@
+from .output_schema_concierge import ConsolidatedReport
+from .output_schema_bureal import RespostaBureauAgente
+from .output_schema_cartao import RespostaCartaoAgente
+from .output_schema_contrato import RespostaContratos
