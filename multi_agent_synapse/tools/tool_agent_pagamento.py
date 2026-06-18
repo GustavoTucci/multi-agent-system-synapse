@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-# pyrefly: ignore [missing-import]
-=======
 import os
 from dotenv import load_dotenv
 from google.cloud import bigquery
@@ -124,4 +121,3 @@ def get_active_pos_contracts(sk_id_curr: int) -> dict:
     contratos = df["SK_ID_PREV"].nunique()
 
     return {"contratos_ativos_pos": int(contratos)}
->>>>>>> Stashed changes
