@@ -12,19 +12,17 @@ def get_client_profile(sk_id: int) -> dict:
     Returns:
         dict com campos: renda_anual, tipo_renda, anos_emprego
     """
-    PROJETO = "prj-data-ps-us"
-    DATASET = "home_credit_default_risk"
-    TABELA  = "application_train"
     query = f"""
         SELECT 
             AMT_INCOME_TOTAL as renda_anual,
-            NAME_EMPLOYMENT_TYPE as tipo_renda,  # ← Corrigir nome da coluna
-            YEARS_EMPLOYED as anos_emprego       # ← Corrigir nome da coluna
-        FROM '{PROJETO}.{DATASET}.{TABELA}'
+            NAME_INCOME_TYPE as tipo_renda,  
+            ROUND (ABS(DAYS_EMPLOYED)/365.0, 1) as anos_emprego, 
+            EXT_SOURCE_1, EXT_SOURCE_2, EXT_SOURCE_3 as analise_credito
+        FROM prj-data-ps-us.home_credit_default_risk.application_train
         WHERE SK_ID_CURR = {sk_id}
     """
     
-    df = pandas_gbq.read_query(query, project_id=PROJETO)
+    df = pandas_gbq.read_gbq(query, project_id="prj-data-ps-us")
     
     if df.empty:
         raise ValueError(f"Cliente {sk_id} não encontrado")

@@ -1,14 +1,12 @@
 import os
-# pyrefly: ignore [missing-import]
 from google.adk.agents import LlmAgent
-# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
-from multi_agent_synapse.tools.tool_agent_bureal import get_active_credits, get_debt_summary, get_status_trend
-
+from ..tools.tool_agent_bureal import get_active_credits, get_debt_summary, get_status_trend
+from ..schemas.output_schema_bureal import RespostaBureauAgente
 
 load_dotenv()
-os.environ['GOOGLE_API_KEY'] = os.getenv('GOOGLE_API_KEY')
-
+if api_key := os.getenv('GOOGLE_API_KEY'):
+    os.environ['GOOGLE_API_KEY'] = api_key
 
 agent_bureau = LlmAgent(
     model='gemini-2.5-flash',
@@ -18,7 +16,8 @@ agent_bureau = LlmAgent(
         'Você é um analista especialista em histórico de crédito externo (Bureau).\n'
         'Sua função é analisar os dados consolidados do cliente fornecidos pelas ferramentas.\n'
         'Sempre que o usuário passar um sk_id_curr, use as ferramentas disponíveis para coletar informações.\n'
-        'Retorne os resultados em um formato JSON claro e estruturado contendo a análise do perfil de risco.'
+        'Retorne os resultados no formato JSON do output_schema.'
     ),
-    tools=[get_active_credits, get_debt_summary, get_status_trend]
+    tools=[get_active_credits, get_debt_summary, get_status_trend],
+    output_schema=RespostaBureauAgente
 )
