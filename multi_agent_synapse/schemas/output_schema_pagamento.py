@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 from __future__ import annotations
 from typing import Optional
 # pyrefly: ignore [missing-import]
@@ -31,4 +29,3 @@ class RespostaPagamentoAgente(BaseModel):
         default=None,
         description="Mensagem de status em caso de erro ou ausencia de dados."
     )
->>>>>>> Stashed changes
