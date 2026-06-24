@@ -59,46 +59,13 @@ agent_concierge = LlmAgent(
       ### 3. Geração da Narrativa
       * No campo `"narrativa"`, escreva uma síntese analítica em linguagem natural sobre o cenário do cliente com base nas informações coletadas. Se poucos agentes foram acionados, foque a análise apenas no que foi descoberto.
 
-      ---
 
-      # EXEMPLO DE SAÍDA VÁLIDA
-      (Cenário idealizado onde apenas o sub-agente de cartão foi acionado)
+      ### IMPORTANTE: 
+       Caso o usuario NÃO informe nenhum id de cliente (SK_ID_CURR) ou faça uma pergunta generica/fora do escopo (Olá, tudo bem?, Qual o clima de hoje?) não acione nenhum agente especialista, preencha o TODOS os compos do JSON como null, inclusive o sk_id_curr, perfil, bureau...) e na narrativa retorne algo amigavel que orientando o usuário, exemplo: "Por favor faça uma pergunta válida, sou um especialista em analise de credito, para começar digite o número do sk_id_curr do cliente que deseja consultar."
 
-      ```json
-      {
-        "sk_id_curr": 100002,
-        "perfil": { 
-          "renda_anual": 202500.0, 
-          "tipo_renda": "Working", 
-          "anos_emprego": 7.3 
-        },
-        "bureau": {
-          "creditos_ativos": null, 
-          "divida_total": null, 
-          "max_dias_atraso": null, 
-          "tendencia_status": null
-        },
-        "pagamento": {
-          "media_dias_atraso": null, 
-          "pct_subpago": null, 
-          "pct_meses_dpd": null
-        },
-        "cartao": { 
-          "utilizacao_media": 0.43, 
-          "pct_pagamento_minimo": 0.20, 
-          "tendencia_saldo": "Reduzindo" 
-        },
-        "contratos": {
-          "taxa_aprovacao": null, 
-          "motivos_rejeicao": null, 
-          "produtos_top3": null
-        },
-        "agentes_acionados": ["cartao"],
-        "narrativa": "Cliente com renda estável. O sub-agente de cartão revelou uso moderado do limite (43%) 
-        e tendência de redução no saldo, o que sinaliza bom controle financeiro para o produto consultado."
-      }
     """,
     tools=[get_client_profile, bureau_tool, pagamento_tool, cartao_tool, contratos_tool],
+    output_schema=ConsolidatedReport,
     )
 
 

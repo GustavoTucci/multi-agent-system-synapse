@@ -46,10 +46,10 @@ class ErrorReport(BaseModel):
 
 
 class ConsolidatedReport(BaseModel):
-    sk_id_curr: int = Field(..., description="ID identificador único do cliente consultado.")
+    sk_id_curr: int | None = Field(default=None, description="ID identificador único do cliente consultado.")
     
-    perfil: PerfilBase = Field(
-        ..., description="Dados do perfil demográfico e financeiro base do cliente."
+    perfil: Optional[PerfilBase] = Field(
+        default=None, description="Dados do perfil demográfico e financeiro base do cliente."
     )
     bureau: Optional[DadosBureau] = Field(
         default_factory=DadosBureau, 
