@@ -99,7 +99,7 @@ A terceira semana focou na integração e no estabelecimento da inteligência ce
 * **Implementação:** Os 4 sub-agentes desenvolvidos na Sprint 1 (`Bureau`, `Pagamentos`, `Cartão de Crédito` e `Contratos Internos`) foram acoplados como ferramentas (`AgentTool`) dentro do `LlmAgent` Concierge.
 * **Isolamento de Contexto:** Cada sub-agente passou a rodar em sessões isoladas quando acionado pelo Concierge, garantindo que o excesso de dados brutos de tabelas específicas não poluísse o contexto principal do orquestrador.
 
-### 2. Runner e `Session`
+### 2. `Runner` e `Session`
 * **Controle de Turnos:** O `Runner` foi configurado para orquestrar as rodadas de perguntas e respostas, limitando e tratando loops infinitos de tool calls.
 * **Memória Conversacional:** Implementamos o primitivo `Session` para reter o histórico. Isso permitiu que o Concierge lembrasse das informações em turnos subsequentes.
   * *Turno 1:* "Qual é a renda do cliente 100002?" *(Retorna dados do perfil)*
