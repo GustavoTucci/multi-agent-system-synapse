@@ -3,7 +3,6 @@
 **Equipe:** Arthur Faria, Gustavo Gomes, Gustavo Tucci, Jeniffer Oliveira
 
 ---
-# Relatório de Desenvolvimento do Projeto — Sprint 1 e 2 (4 Semanas)
 
 ## Semana 1: Fundação e Infraestrutura
 
@@ -64,13 +63,9 @@ O objetivo principal do agente é consolidar o histórico financeiro e o comport
 Dessa forma, a análise é feita apenas com os registros do cliente informado.
 
 #### Tools do Agente de Contratos:
-* `carregar_tabela()`: Essa tool é responsável por carregar a tabela `previous_application.csv`. Ela permite que os dados da base sejam lidos e utilizados pelas demais tools.
-* `filtrar_cliente(sk_id_curr)`: Essa tool filtra os dados da tabela usando o `SK_ID_CURR` informado pelo usuário. Ela garante que a análise seja feita somente com os contratos do cliente consultado.
-* `get_application_history(sk_id_curr)`: Essa tool analisa o histórico geral de contratos anteriores do cliente. Ela calcula: total de pedidos; total de contratos aprovados; total de contratos recusados; taxa de aprovação. A taxa de aprovação é calculada pela relação entre contratos aprovados e total de pedidos.
-* `get_rejection_reasons(sk_id_curr)`: Essa tool identifica os principais motivos de rejeição dos contratos recusados.
-* `get_top_products(sk_id_curr)`: Essa tool identifica os tipos de contrato mais frequentes do cliente.
-* `get_approved_amount_ratio(sk_id_curr)`: Essa tool calcula a razão entre o valor aprovado e o valor solicitado. A regra utilizada é: `soma do valor aprovado nos contratos aprovados / soma do valor solicitado em todos os contratos anteriores`.
-* `analisar_contratos(sk_id_curr)`: Essa é a tool principal do agente. Ela chama as outras tools, junta os resultados e monta a resposta final. Sua função principal é consolidar toda a análise dos contratos anteriores do cliente, reunindo: taxa de aprovação; motivos de rejeição; produtos mais frequentes; razão entre valor aprovado e solicitado.
+* `get_application_history(sk_id_curr)`: Pedidos anteriores com status Approved/Refused/Canceled e calcula taxa_aprovacao e razao_valor_aprovado.
+* `get_rejection_reasons(sk_id_curr)`: Contagem de CODE_REJECT_REASON nos contratos recusados.
+* `get_top_products(sk_id_curr)`: Tipos de produto mais contratados pelo cliente.
 
 #### Resposta Final do Agente:
 No final, o agente retorna uma resposta estruturada em JSON com os principais resultados da análise. O formato esperado é:
