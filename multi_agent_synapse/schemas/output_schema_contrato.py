@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field
 
-# 1. Defina o esquema que você quer usar para validar os contratos depois
 class RespostaContratos(BaseModel):
     taxa_aprovacao: float | None = Field(
         default=None,
@@ -8,7 +7,7 @@ class RespostaContratos(BaseModel):
     )
     motivos_rejeicao: list[str] | None = Field(
         default=None,
-        description="Principais motivos de rejeição."
+        description="Principais motivos de rejeição. OBRIGATÓRIO ser uma lista de strings, ex: ['LIMIT']."
     )
     produtos_top3: list[str] | None = Field(
         default=None,
@@ -23,5 +22,5 @@ class RespostaContratos(BaseModel):
 class SetModelResponseParams(BaseModel):
     dados: RespostaContratos | str | None = Field(default=None)
 
-# O PONTO CHAVE: Avise o Pydantic para reconstruir o modelo usando o escopo correto
+# Avise o Pydantic para reconstruir o modelo usando o escopo correto
 SetModelResponseParams.model_rebuild()

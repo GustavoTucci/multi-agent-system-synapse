@@ -29,8 +29,8 @@ class DadosCartao(BaseModel):
 
 class DadosContratos(BaseModel):
     taxa_aprovacao: Optional[float] = Field(None, description="Taxa de aprovação de contratos anteriores.")
-    motivos_rejeicao: Optional[List[str]] = Field(None, description="Lista de principais códigos de motivo de rejeição.")
-    produtos_top3: Optional[Union[str, List[str]]] = Field(None, description="Top 3 tipos de produtos mais contratados anteriormente.")
+    motivos_rejeicao: list[str] | None = Field(default=None, description="Principais motivos de rejeição. OBRIGATÓRIO ser uma lista de strings, ex: ['LIMIT'].")    
+    produtos_top3: list[str] | None = Field(default=None, description="Top 3 tipos de produtos mais contratados anteriormente.")
     razao_valor_aprovado: Optional[float] = Field(None, description="Relação entre valor aprovado e valor solicitado.")
 
 
