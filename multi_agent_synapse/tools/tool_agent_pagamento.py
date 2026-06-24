@@ -11,13 +11,8 @@ client = bigquery.Client(project=PROJECT)
 
 
 def get_avg_delay_days(sk_id_curr: int) -> dict:
-    """
-    Calcula a media de dias de atraso nas parcelas do cliente.
-    Formula: media de (DAYS_ENTRY_PAYMENT - DAYS_INSTALMENT).
+    """Calcula a media de dias de atraso nas parcelas do cliente."""
 
-    Args:
-        sk_id_curr: ID unico do cliente (SK_ID_CURR).
-    """
     query = f"""
         SELECT
             DAYS_ENTRY_PAYMENT,
@@ -40,13 +35,8 @@ def get_avg_delay_days(sk_id_curr: int) -> dict:
 
 
 def get_underpayment_rate(sk_id_curr: int) -> dict:
-    """
-    Calcula o percentual de parcelas pagas abaixo do valor previsto.
-    Formula: count(AMT_PAYMENT < AMT_INSTALMENT) / total de parcelas.
+    """Calcula o percentual de parcelas pagas abaixo do valor previsto."""
 
-    Args:
-        sk_id_curr: ID unico do cliente (SK_ID_CURR).
-    """
     query = f"""
         SELECT
             AMT_INSTALMENT,
@@ -70,13 +60,8 @@ def get_underpayment_rate(sk_id_curr: int) -> dict:
 
 
 def get_pos_dpd_history(sk_id_curr: int) -> dict:
-    """
-    Calcula o percentual de meses com atraso (SK_DPD > 0) na tabela POS_CASH_balance.
-    Formula: count(SK_DPD > 0) / total de meses.
-
-    Args:
-        sk_id_curr: ID unico do cliente (SK_ID_CURR).
-    """
+    """Calcula o percentual de meses com atraso (SK_DPD > 0) na tabela POS_CASH_balance."""
+    
     query = f"""
         SELECT SK_DPD
         FROM `{DATASET}.pos_cash_balance`
@@ -98,12 +83,8 @@ def get_pos_dpd_history(sk_id_curr: int) -> dict:
 
 
 def get_active_pos_contracts(sk_id_curr: int) -> dict:
-    """
-    Conta quantos contratos POS ainda estao com status Active.
-
-    Args:
-        sk_id_curr: ID unico do cliente (SK_ID_CURR).
-    """
+    """Conta quantos contratos POS ainda estao com status Active."""
+    
     query = f"""
         SELECT SK_ID_PREV, NAME_CONTRACT_STATUS
         FROM `{DATASET}.pos_cash_balance`
@@ -121,3 +102,16 @@ def get_active_pos_contracts(sk_id_curr: int) -> dict:
     contratos = df["SK_ID_PREV"].nunique()
 
     return {"contratos_ativos_pos": int(contratos)}
+
+def get_pagamento_consolidated(sk_id_curr: int) -> dict:
+    """Retorna todas as informações consolidadas de pagamento e parcelas do cliente."""
+    
+    delay = get_avg_delay_days(sk_id_curr)
+    underpayment = get_underpayment_rate(sk_id_curr)
+    dpd = get_pos_dpd_history(sk_id_curr)
+   
+    return {
+        "media_dias_atraso": delay.get("media_dias_atraso") if "media_dias_atraso" in delay else None,
+        "pct_subpago": underpayment.get("pct_subpago") if "pct_subpago" in underpayment else None,
+        "pct_meses_dpd": dpd.get("pct_meses_dpd") if "pct_meses_dpd" in dpd else None
+    }

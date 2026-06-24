@@ -1,4 +1,5 @@
 from .tool_agent_concierge import get_client_profile
-from .tool_agent_bureal import get_active_credits, get_debt_summary, get_status_trend
-from .tool_agent_cartao import get_limit_utilization, get_min_payment_rate, get_balance_trend
-from .tool_agent_contrato import get_application_history, get_rejection_reasons, get_top_products
+from .tool_agent_bureau import get_bureau_consolidated
+from .tool_agent_cartao import get_cartao_consolidated
+from .tool_agent_contrato import get_contrato_consolidated
+from .tool_agent_pagamento import get_pagamento_consolidated

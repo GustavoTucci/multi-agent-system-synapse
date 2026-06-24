@@ -5,7 +5,7 @@ DATASET_ID = "home_credit_default_risk"
 TABLE_ID = "previous_application"
 
 
-def get_application_history(sk_id_curr: int) -> dict:
+def get_application_history(sk_id_curr):
     """
     Pedidos anteriores com status Approved/Refused/Canceled.
     Calcula taxa_aprovacao e razao_valor_aprovado.
@@ -49,7 +49,7 @@ def get_application_history(sk_id_curr: int) -> dict:
     }
 
 
-def get_rejection_reasons(sk_id_curr: int) -> dict:
+def get_rejection_reasons(sk_id_curr):
     """
     Contagem de CODE_REJECT_REASON nos contratos recusados.
     """
@@ -79,7 +79,7 @@ def get_rejection_reasons(sk_id_curr: int) -> dict:
     return {"motivos_rejeicao": motivos_rejeicao}
 
 
-def get_top_products(sk_id_curr: int) -> dict:
+def get_top_products(sk_id_curr):
     """
     Tipos de produto mais contratados pelo cliente.
     """
@@ -106,3 +106,19 @@ def get_top_products(sk_id_curr: int) -> dict:
     )
 
     return {"produtos_top3": produtos_top3}
+
+def get_contrato_consolidated(sk_id_curr):
+    """
+    Retorna todas as informações consolidadas de contratos anteriores do cliente.
+    Combina taxa de aprovação, motivos de rejeição e produtos mais procurados.
+    """
+    historico = get_application_history(sk_id_curr)
+    rejeicoes = get_rejection_reasons(sk_id_curr)
+    produtos = get_top_products(sk_id_curr)
+   
+    return {
+        "taxa_aprovacao": historico.get("taxa_aprovacao", 0.0),
+        "razao_valor_aprovado": historico.get("razao_valor_aprovado", 0.0),
+        "motivos_rejeicao": rejeicoes.get("motivos_rejeicao", []),
+        "produtos_top3": produtos.get("produtos_top3", [])
+    }
